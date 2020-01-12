@@ -6,8 +6,10 @@ import {Form,Input,Icon,Button} from 'antd'
 
 import logoimg from './logo.png'
 import './index.less'
-export default class Login extends Component{
+@Form.create()
+ class Login extends Component{
   render(){
+    const {getFieldDecorator} =this.props.form
     return <div className="login">
       <header className="login-header">
         <img src={logoimg} alt="logo"/>
@@ -17,9 +19,33 @@ export default class Login extends Component{
         <h3>用户登入</h3>
         <Form className='login-form'>
           <Form.Item>
-            <Input 
+            {
+              getFieldDecorator('username',
+                {
+                  rules:[
+                    {
+                      required:true,
+                      message:'用户名不能为空'
+                    },
+                    {
+                      min:4,
+                      message:'用户名不能少于三个字符'
+                    },
+                    {
+                      max:13,
+                      message:'用户名不能多于字符'
+                    },{
+                      pattern:/^\w+$/,
+                      message:'用户名不能包含特殊符号'
+                    }
+                  ]
+                }
+              )(
+                <Input 
             prefix={<Icon type='user' style={{color:'rgba(0,0,0,.25)'}}/>}
             placeholder='请输入账号'/>
+              )
+            }
           </Form.Item>
           <Form.Item>
             <Input 
@@ -35,3 +61,4 @@ export default class Login extends Component{
     </div>
   }
 }
+export default Login
